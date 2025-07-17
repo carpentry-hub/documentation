@@ -1,0 +1,215 @@
+openapi: 3.0.3
+info:
+  title: Woody's Workshop API
+  version: 1.0.0
+  description: API para administrar proyectos, usuarios, listas y comentarios en una app de carpintería.
+
+servers:
+  - url: https://api.carpinteria.com/v1
+
+paths:
+  /projects:
+    get:
+      summary: Obtener todos los proyectos
+      responses:
+        '200':
+          description: Lista de proyectos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Project'
+
+    post:
+      summary: Crear nuevo proyecto
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Project'
+      responses:
+        '201':
+          description: Proyecto creado
+
+  /projects/{id}:
+    get:
+      summary: Obtener un proyecto por ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Proyecto encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+
+  /users/{id}:
+    get:
+      summary: Obtener usuario por ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Usuario
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+  /projects/{id}/ratings:
+    post:
+      summary: Calificar un proyecto
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Rating'
+      responses:
+        '201':
+          description: Calificación registrada
+
+  /projects/{id}/comments:
+    parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+    get:
+      summary: Listar comentarios de un proyecto
+      responses:
+        '200':
+          description: Lista de comentarios
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Comment'
+
+    post:
+      summary: Agregar comentario a un proyecto
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Comment'
+      responses:
+        '201':
+          description: Comentario creado
+
+  /project-lists:
+    post:
+      summary: Crear una lista de proyectos
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProjectList'
+      responses:
+        '201':
+          description: Lista creada
+
+components:
+  schemas:
+
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        username:
+          type: string
+        email:
+          type: string
+        phone_number:
+          type: string
+        reputation:
+          type: number
+        profile_picture:
+          type: integer
+
+    Project:
+      type: object
+      properties:
+        id:
+          type: integer
+        owner:
+          type: integer
+        title:
+          type: string
+        average_rating:
+          type: number
+        rating_count:
+          type: integer
+        materials:
+          type: array
+          items:
+            type: string
+        tools:
+          type: array
+          items:
+            type: string
+        style:
+          type: array
+          items:
+            type: string
+        portrait:
+          type: string
+        images:
+          type: array
+          items:
+            type: string
+        tutorial:
+          type: string
+        description:
+          type: string
+        time_to_build:
+          type: integer
+
+    Rating:
+      type: object
+      properties:
+        value:
+          type: integer
+        user:
+          type: integer
+
+    Comment:
+      type: object
+      properties:
+        content:
+          type: string
+        rating:
+          type: integer
+        user:
+          type: integer
+
+    ProjectList:
+      type: object
+      properties:
+        name:
+          type: string
+        user:
+          type: integer
+        is_public:
+          type: boolean
