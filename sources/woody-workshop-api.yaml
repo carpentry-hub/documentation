@@ -141,6 +141,33 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Comment'
+    post:
+        tags: [Comments]
+        summary: Comentar un proyecto
+        parameters:
+          - name: id
+            in: path
+            required: true
+            schema:
+              type: integer
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  content:
+                    type: string
+                  user:
+                    type: integer
+                  rating:
+                    type: integer
+                  proyect_id:
+                    type: integer
+        responses:
+          '201':
+            description: Comentario creado
   /comments/{id}:
     delete:
       tags: [Comments]
@@ -201,6 +228,26 @@ paths:
       responses:
         '201':
           description: Respuesta creada
+  /users/{id}:
+    get:
+      tags: [Users]
+      summary: Obtener informacion de un usuario
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Usuario
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+                  
   /users/{id}/projects:
     get:
       tags: [Users]
