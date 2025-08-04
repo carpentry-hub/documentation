@@ -444,6 +444,8 @@ components:
           type: number
         profile_picture:
           type: integer
+        firebase_uid :
+          type: string
     Project:
       type: object
       properties:
